@@ -104,6 +104,10 @@ int studentID = 123;
     final Future<Database> database = openDatabase(
         join(await getDatabasesPath(), 'students_database.db'),
         onCreate: (db, version)=>db.execute("CREATE TABLE students(id TEXT PRIMARY KEY, name TEXT, score INTEGER)"),
+        onUpgrade: (db, oldVersion, newVersion){
+          //dosth for migration
+          print("old:$oldVersion,new:$newVersion");
+        },
     version: 1,
     );
 
@@ -133,6 +137,8 @@ int studentID = 123;
     await insertStudent(student3);
 
     students().then((list)=>list.forEach((s)=>print('id:${s.id},name:${s.name}')));
+    final Database db = await database;
+    db.close();
 
   }
 
